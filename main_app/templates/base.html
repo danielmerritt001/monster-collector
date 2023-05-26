@@ -1,3 +1,6 @@
+
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +13,7 @@
     href=""
   >
   <title>Cat Collector</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
   {% block head %}
   {% endblock %}
 </head>
@@ -25,6 +29,7 @@
     </div>
     <nav>
       <ul>
+        <li><a href="/monsters">All Monsters</a></li>
         <li><a href="/about">About</a></li>
       </ul>
     </nav>
