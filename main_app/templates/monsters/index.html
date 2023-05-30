@@ -17,17 +17,17 @@
 </section>
 
 <section class="card-container">
-  {% for cat in cats %}
+  {% for monster in monsters %}
     <div class="card">
       <div class="card-content">
         </div>
-        <h2 class="card-title">{{ cat.name }}</h2>
-        {% if cat.age > 0 %}
-          <p>A {{ cat.age }} year old {{ cat.breed }}</p>
+        <h2 class="card-title">{{ monster.name }}</h2>
+        {% if monster.age > 0 %}
+          <p>A {{ monster.age }} year old {{ monster.breed }}</p>
         {% else %}
-          <p>A {{ cat.breed }} kitten.</p>
+          <p>A {{ monster.breed }} in its infancy.</p>
         {% endif %}
-        <p><small>{{ cat.description }}</small></p>
+        <p><small>{{ monster.description }}</small></p>
       </div>
     </div>
   {% endfor %}
