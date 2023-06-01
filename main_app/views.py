@@ -7,13 +7,14 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # classes
 
 class Home(LoginView):
   template_name = 'home.html'
 
-class MonsterCreate(CreateView):
+class MonsterCreate(LoginRequiredMixin, CreateView):
   model = Monster
   fields = ['name', 'breed', 'description', 'age']
 
@@ -21,29 +22,29 @@ class MonsterCreate(CreateView):
     form.instance.user = self.request.user  
     return super().form_valid(form)
 
-class MonsterUpdate(UpdateView):
+class MonsterUpdate(LoginRequiredMixin, UpdateView):
   model = Monster
   fields = ['breed', 'description', 'age']
 
-class MonsterDelete(DeleteView):
+class MonsterDelete(LoginRequiredMixin, DeleteView):
   model = Monster
   success_url = '/monsters/'
 
-class BaneCreate(CreateView):
+class BaneCreate(LoginRequiredMixin, CreateView):
   model = Bane
   fields = '__all__'
 
-class BaneList(ListView):
+class BaneList(LoginRequiredMixin, ListView):
   model = Bane
 
-class BaneDetail(DetailView):
+class BaneDetail(LoginRequiredMixin, DetailView):
   model= Bane
 
-class BaneUpdate(UpdateView):
+class BaneUpdate(LoginRequiredMixin, UpdateView):
   model = Bane
   fields = ['name', 'color']
 
-class BaneDelete(DeleteView):
+class BaneDelete(LoginRequiredMixin, DeleteView):
   model = Bane
   success_url = '/banes/'
 
@@ -52,16 +53,19 @@ class BaneDelete(DeleteView):
 def about(request):
   return render(request, 'about.html')
 
+@login_required
 def monster_index(request):
   monsters = Monster.objects.filter(user=request.user)
   return render(request, 'monsters/index.html', {'monsters': monsters})
 
+@login_required
 def monster_detail(request, monster_id):
   monster = Monster.objects.get(id=monster_id)
   banes_monster_doesnt_have = Bane.objects.exclude(id__in = monster.banes.all().values_list('id'))
   checklist_form=ChecklistForm()
   return render(request, 'monsters/detail.html', { 'monster': monster, 'checklist_form': checklist_form, 'banes': banes_monster_doesnt_have})
 
+@login_required
 def add_checklist(request, monster_id):
   form = ChecklistForm(request.POST)
   if form.is_valid():
@@ -70,6 +74,7 @@ def add_checklist(request, monster_id):
     new_checklist.save()
   return redirect('monster-detail', monster_id=monster_id)
 
+@login_required
 def assoc_bane(request, monster_id, bane_id):
   Monster.objects.get(id=monster_id).banes.add(bane_id)
   return redirect('monster-detail', monster_id=monster_id)
