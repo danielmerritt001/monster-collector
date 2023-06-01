@@ -78,5 +78,29 @@
       </div>
     {% endif %}
   </section>
+  <section class="toys">
+    <div class="subsection-title">
+      <h2>Banes</h2>
+    </div>
+    <h3>{{ monster.name }}'s Banes</h3>
+    <div class="subsection-content">
+      {% if monster.banes.count %}
+        {% for bane in monster.banes.all %}
+          <div class="toy-container">
+            <div 
+              class="color-block"
+              style="background-color: {{ bane.color }}"
+            ></div>
+            <a href="{% url 'bane-detail' bane.id %}">
+              <p>A {{ bane.color }} {{ bane.name }}</p>
+            </a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="no-toys">{{bane.name}} doesn't have any known banes 😞</p>
+      {% endif %}
+    </div>
+    <h3>Available Banes</h3>
+    <div class="subsection-content">
 </div>
 {% endblock %}

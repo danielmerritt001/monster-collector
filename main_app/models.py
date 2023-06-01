@@ -8,11 +8,22 @@ TASKS = (
   ('S', 'Setup the Sequel')
 )
 
+class Bane(models.Model):
+  name = models.CharField(max_length=50)
+  color = models.CharField(max_length=20)
+
+  def __str__(self):
+    return self.name
+  
+  def get_absolute_url(self):
+    return reverse("bane-detail", kwargs={"pk": self.id})
+
 class Monster(models.Model):
   name = models.CharField(max_length=100)
   breed = models.CharField(max_length=100)
   description = models.TextField(max_length=250)
   age = models.IntegerField()
+  banes = models.ManyToManyField(Bane)
 
   def __str__(self):
     return self.name
@@ -37,3 +48,5 @@ class Checklist(models.Model):
   
   class Meta:
     ordering = ['-date']
+
+  

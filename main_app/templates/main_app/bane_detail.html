@@ -1,0 +1,24 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block head %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/banes/bane-detail.css' %}"
+/>
+{% endblock %}
+
+{% block content %}
+  
+<div class="card" style="border-color: {{ bane.color }}">
+  <div class="card-bg" style="background-color: {{ bane.color }}"></div>
+  <div class="card-content">
+    <h2>{{ bane.name }}</h2>
+    <p>A {{ bane.color }} toy</p>
+  </div>
+</div>
+<a href="{% url 'bane-update' bane.id %}" class="btn warn">Edit</a>
+<a href="{% url 'bane-delete' bane.id %}" class="btn danger">Delete</a>
+
+{% endblock %}

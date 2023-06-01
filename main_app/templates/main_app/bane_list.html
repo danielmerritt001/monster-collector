@@ -1,0 +1,32 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block head %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/banes/bane-index.css' %}"
+/>
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+  <h1>All Banes</h1>
+</section>
+
+<section class="card-container">
+  {% for bane in bane_list %}
+  <div class="card" style="border-color: {{ bane.color }}">
+    <div class="card-bg" style="background-color: {{ bane.color }}"></div>
+    <a href="{% url 'bane-detail' bane.id %}">
+      <div class="card-content">
+        <h2>{{ bane.name }}</h2>
+        <p>A {{ bane.color }} toy</p>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+</section>
+
+{% endblock %}
