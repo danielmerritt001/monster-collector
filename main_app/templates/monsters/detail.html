@@ -3,10 +3,20 @@
 
 {% block head %}
 <link 
+  href="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.css" 
+  rel="stylesheet" 
+/>
+<link rel="stylesheet" href="{% static 'css/mcdp.css' %}">
+<script 
+  src="https://cdn.jsdelivr.net/npm/mc-datepicker/dist/mc-calendar.min.js"
+>
+</script>
+<link 
   rel="stylesheet" 
   type="text/css" 
   href="{% static 'css/monsters/monster-detail.css' %}"
 />
+<script defer src="{% static 'js/monster-detail.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -20,7 +30,53 @@
       <h2>A {{ monster.breed }} kitten.</h2>
     {% endif %}
     <p>{{ monster.description }}</p>
+    <div class="cat-actions">
+      <a href="{% url 'monster-update' monster.id %}" class="btn warn">Edit</a>
+      <a href="{% url 'monster-delete' monster.id %}" class="btn danger">Delete</a>
+    </div>
   </div>
 </section>
-
+<div class="feedings-toy-container">
+  <section class="feedings">
+    <div class="subsection-title">
+      <h2>Daily Log</h2>
+    </div>
+    <h3>Add a Log</h3>
+    <form
+      action="{% url 'add-checklist' monster.id %}"
+      method="post" 
+      class="subsection-content"
+			autocomplete="off"
+    >
+      {% if monster.finished_for_today %}
+        <p class="fed">{{monster.name}} has had a full day.</p>
+      {% else %}
+        <p class="unfed">{{monster.name}} should probably be up to something!</p>
+      {% endif %}
+      {% csrf_token %}
+      {{ checklist_form.as_p }}
+      <button type="submit" class="btn submit">Add Log</button>
+    </form>
+    <h3>Past Logs</h3>
+    {% if monster.checklist_set.all.count %}
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Task</th></tr>
+        </thead>
+        <tbody>
+          {% for checklist in monster.checklist_set.all %}
+            <tr>
+              <td>{{checklist.date}}</td>
+              <td>{{checklist.get_task_display}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+			<div class="subsection-content">
+        <p>{{monster.name}} is biding its time.</p>
+      </div>
+    {% endif %}
+  </section>
+</div>
 {% endblock %}
