@@ -97,10 +97,32 @@
           </div>
         {% endfor %}
       {% else %}
-        <p class="no-toys">{{bane.name}} doesn't have any known banes 😞</p>
+        <p class="no-toys">{{monster.name}} doesn't have any known banes 😞</p>
       {% endif %}
     </div>
     <h3>Available Banes</h3>
     <div class="subsection-content">
+      {% if banes.count %}
+      {% for bane in banes.all %}
+        <div class="toy-container">
+          <div 
+            class="color-block"
+            style="background-color: {{ bane.color }}"
+          ></div>
+          <a href="{% url 'bane-detail' bane.id %}">
+            <p>A {{ bane.color }} {{ bane.name }}</p>
+          </a>
+          <form action="{% url 'assoc-bane' monster.id bane.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn submit">Give Bane</button>
+          </form>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="all-toys">
+        {{monster.name}} is weak to all known banes.
+      </p>
+    {% endif %}
+    </div>
 </div>
 {% endblock %}

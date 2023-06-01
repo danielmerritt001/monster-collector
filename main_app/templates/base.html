@@ -29,11 +29,17 @@
     </div>
     <nav>
       <ul>
-        <li><a href="{% url 'monster-index' %}">All Monsters</a></li>
-        <li><a href="{% url 'bane-index' %}">All Banes</a></li>
-        <li><a href="{% url 'monster-create' %}">Add a Monster</a></li>
-        <li><a href="{% url 'bane-create' %}">Add a Bane</a></li>
-        <li><a href="{% url 'about' %}">About</a></li>
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'monster-index' %}">All Monsters</a></li>
+          <li><a href="{% url 'bane-index' %}">All Banes</a></li>
+          <li><a href="{% url 'monster-create' %}">Add a Monster</a></li>
+          <li><a href="{% url 'bane-create' %}">Add a Bane</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+        {% else %}
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'home' %}">Login</a></li>
+          <li><a href="{% url 'signup' %}">Sign Up</a></li>
+        {% endif %}
       </ul>
     </nav>
   </header>
